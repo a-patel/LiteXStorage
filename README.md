@@ -78,51 +78,61 @@ public class Startup
 
         #region LiteX Storage (Azure)
 
-        // add azure blob storage settings
-        services.AddSingleton(configuration.GetSection("AzureBlobConfig").Get<AzureBlobConfig>());
+        services.AddLiteXAzureBlobService(configuration);
 
-        // register azure blob storage service
-        services.AddTransient<IBlobService, AzureBlobService>();
+        // OR
+        // load configuration settings on your own.
+        // from appsettings, database, hardcoded etc.
+        var azureBlobConfig = new AzureBlobConfig();
+        services.AddLiteXAzureBlobService(configuration, azureBlobConfig);
 
         #endregion
 
         #region LiteX Storage (Amazon)
 
-        // add amazon blob storage settings
-        services.AddSingleton(configuration.GetSection("AmazonBlobConfig").Get<AmazonBlobConfig>());
+        services.AddLiteXAmazonBlobService(configuration);
 
-        // register amazon blob storage service
-        services.AddTransient<IBlobService, AmazonBlobService>();
+        // OR
+        // load configuration settings on your own.
+        // from appsettings, database, hardcoded etc.
+        var amazonBlobConfig = new AmazonBlobConfig();
+        services.AddLiteXAmazonBlobService(configuration, amazonBlobConfig);
 
         #endregion
 
         #region LiteX Storage (Google)
 
-        // add google blob storage settings
-        services.AddSingleton(configuration.GetSection("GoogleCloudBlobConfig").Get<GoogleCloudBlobConfig>());
+        services.AddLiteXGoogleCloudBlobService(configuration);
 
-        // register google blob storage service
-        services.AddTransient<IBlobService, GoogleCloudBlobService>();
+        // OR
+        // load configuration settings on your own.
+        // from appsettings, database, hardcoded etc.
+        var googleCloudBlobConfig = new GoogleCloudBlobConfig();
+        services.AddLiteXGoogleCloudBlobService(configuration, googleCloudBlobConfig);
 
         #endregion
 
         #region LiteX Storage (Kvpbase)
 
-        // add azure kvpbase storage settings
-        services.AddSingleton(configuration.GetSection("KvpbaseBlobConfig").Get<KvpbaseBlobConfig>());
+        services.AddLiteXKvpbaseBlobService(configuration);
 
-        // register kvpbase blob storage service
-        services.AddTransient<IBlobService, KvpbaseBlobService>();
+        // OR
+        // load configuration settings on your own.
+        // from appsettings, database, hardcoded etc.
+        var kvpbaseBlobConfig = new KvpbaseBlobConfig();
+        services.AddLiteXKvpbaseBlobService(configuration, kvpbaseBlobConfig);
 
         #endregion
 
         #region LiteX Storage (FileSystem-Local)
 
-        // add file system (local) blob storage settings
-        services.AddSingleton(configuration.GetSection("FileSystemBlobConfig").Get<FileSystemBlobConfig>());
+        services.AddLiteXFileSystemBlobService(configuration);
 
-        // register file system (local) blob storage service
-        services.AddTransient<IBlobService, FileSystemBlobService>();
+        // OR
+        // load configuration settings on your own.
+        // from appsettings, database, hardcoded etc.
+        var fileSystemBlobConfig = new FileSystemBlobConfig();
+        services.AddLiteXFileSystemBlobService(configuration, fileSystemBlobConfig);
 
         #endregion
 
