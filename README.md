@@ -1,4 +1,3 @@
-
 # LiteXStorage
 Abstract interface to implement any kind of basic blob storage services (e.g. Azure, Amazon, Google, Local FileSystem) for any type of application (ASP.NET Core, .Net Standard 2.x).
 
@@ -8,12 +7,12 @@ Abstract interface to implement any kind of basic blob storage services (e.g. Az
 ### Nuget
 
 Run the nuget command for installing the client as,
-`Install-Package LiteX.Storage.Core`
-`Install-Package LiteX.Storage.Azure`
-`Install-Package LiteX.Storage.Amazon`
-`Install-Package LiteX.Storage.Google`
-`Install-Package LiteX.Storage.Kvpbase`
-`Install-Package LiteX.Storage.Local`
+* `Install-Package LiteX.Storage.Core`
+* `Install-Package LiteX.Storage.Azure`
+* `Install-Package LiteX.Storage.Amazon`
+* `Install-Package LiteX.Storage.Google`
+* `Install-Package LiteX.Storage.Kvpbase`
+* `Install-Package LiteX.Storage.Local`
 
 
 ## Configuration
@@ -166,9 +165,7 @@ public class CustomerController : Controller
     /// Ctor
     /// </summary>
     /// <param name="blobService"></param>
-    public CustomerController(ICacheManager cacheManager, IStaticCacheManager staticCacheManager,
-        IEmailSender emailSender,
-        IBlobService blobService)
+    public CustomerController(IBlobService blobService)
     {
         _blobService = blobService;
     }
