@@ -32,21 +32,21 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        #region LiteX Storage
+        // 1. Use default configuration from appsettings.json's 'KvpbaseBlobConfig'
+        services.AddLiteXKvpbaseBlobService();
 
-        #region LiteX Storage (Kvpbase)
+        //OR
+        // 2. Load configuration settings using options.
+        services.AddLiteXKvpbaseBlobService(option =>
+        {
+            //option. = "";
+        });
 
-        services.AddLiteXKvpbaseBlobService(configuration);
-
-        // OR
-        // load configuration settings on your own.
-        // from appsettings, database, hardcoded etc.
+        //OR
+        // 3. Load configuration settings on your own.
+        // (e.g. appsettings, database, hardcoded)
         var kvpbaseBlobConfig = new KvpbaseBlobConfig();
-        services.AddLiteXKvpbaseBlobService(configuration, kvpbaseBlobConfig);
-
-        #endregion
-        
-        #endregion
+        services.AddLiteXKvpbaseBlobService(kvpbaseBlobConfig);
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
