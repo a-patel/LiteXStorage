@@ -31,21 +31,21 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        #region LiteX Storage
+        // 1. Use default configuration from appsettings.json's 'AmazonBlobConfig'
+        services.AddLiteXAmazonBlobService();
 
-        #region LiteX Storage (Amazon)
+        //OR
+        // 2. Load configuration settings using options.
+        services.AddLiteXAmazonBlobService(option =>
+        {
+            //option. = "";
+        });
 
-        services.AddLiteXAmazonBlobService(configuration);
-
-        // OR
-        // load configuration settings on your own.
-        // from appsettings, database, hardcoded etc.
+        //OR
+        // 3. Load configuration settings on your own.
+        // (e.g. appsettings, database, hardcoded)
         var amazonBlobConfig = new AmazonBlobConfig();
-        services.AddLiteXAmazonBlobService(configuration, amazonBlobConfig);
-
-        #endregion
-
-        #endregion
+        services.AddLiteXAmazonBlobService(amazonBlobConfig);
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
