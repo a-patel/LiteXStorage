@@ -29,21 +29,21 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        #region LiteX Storage
+        // 1. Use default configuration from appsettings.json's 'FileSystemBlobConfig'
+        services.AddLiteXFileSystemBlobService();
 
-        #region LiteX Storage (FileSystem-Local)
+        //OR
+        // 2. Load configuration settings using options.
+        services.AddLiteXFileSystemBlobService(option =>
+        {
+            //option. = "";
+        });
 
-        services.AddLiteXFileSystemBlobService(configuration);
-
-        // OR
-        // load configuration settings on your own.
-        // from appsettings, database, hardcoded etc.
+        //OR
+        // 3. Load configuration settings on your own.
+        // (e.g. appsettings, database, hardcoded)
         var fileSystemBlobConfig = new FileSystemBlobConfig();
-        services.AddLiteXFileSystemBlobService(configuration, fileSystemBlobConfig);
-
-        #endregion
-
-        #endregion
+        services.AddLiteXFileSystemBlobService(fileSystemBlobConfig);
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
