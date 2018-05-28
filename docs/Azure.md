@@ -31,23 +31,21 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        #region LiteX Storage
+        // 1. Use default configuration from appsettings.json's 'AzureBlobConfig'
+        services.AddLiteXAzureBlobService();
 
-        // blob storage (use one of below)
+        //OR
+        // 2. Load configuration settings using options.
+        services.AddLiteXAzureBlobService(option =>
+        {
+            //option. = "";
+        });
 
-        #region LiteX Storage (Azure)
-
-        services.AddLiteXAzureBlobService(configuration);
-
-        // OR
-        // load configuration settings on your own.
-        // from appsettings, database, hardcoded etc.
+        //OR
+        // 3. Load configuration settings on your own.
+        // (e.g. appsettings, database, hardcoded)
         var azureBlobConfig = new AzureBlobConfig();
-        services.AddLiteXAzureBlobService(configuration, azureBlobConfig);
-
-        #endregion
-
-        #endregion
+        services.AddLiteXAzureBlobService(azureBlobConfig);
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
