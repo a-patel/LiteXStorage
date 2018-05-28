@@ -60,80 +60,117 @@ Run the nuget command for installing the client as,
 ```cs
 public class Startup
 {
-    public IConfiguration configuration { get; }
-
     public Startup(IConfiguration configuration)
     {
-        this.configuration = configuration;
     }
 
     public void ConfigureServices(IServiceCollection services)
     {
-        #region LiteX Storage
+         #region LiteX Storage
 
         // blob storage (use one of below)
 
         #region LiteX Storage (Azure)
 
-        services.AddLiteXAzureBlobService(configuration);
+        // 1. Use default configuration from appsettings.json's 'AzureBlobConfig'
+        services.AddLiteXAzureBlobService();
 
-        // OR
-        // load configuration settings on your own.
-        // from appsettings, database, hardcoded etc.
+        //OR
+        // 2. Load configuration settings using options.
+        services.AddLiteXAzureBlobService(option =>
+        {
+            //option. = "";
+        });
+
+        //OR
+        // 3. Load configuration settings on your own.
+        // (e.g. appsettings, database, hardcoded)
         var azureBlobConfig = new AzureBlobConfig();
-        services.AddLiteXAzureBlobService(configuration, azureBlobConfig);
+        services.AddLiteXAzureBlobService(azureBlobConfig);
 
         #endregion
 
         #region LiteX Storage (Amazon)
 
-        services.AddLiteXAmazonBlobService(configuration);
+        // 1. Use default configuration from appsettings.json's 'AmazonBlobConfig'
+        services.AddLiteXAmazonBlobService();
 
-        // OR
-        // load configuration settings on your own.
-        // from appsettings, database, hardcoded etc.
+        //OR
+        // 2. Load configuration settings using options.
+        services.AddLiteXAmazonBlobService(option =>
+        {
+            //option. = "";
+        });
+
+        //OR
+        // 3. Load configuration settings on your own.
+        // (e.g. appsettings, database, hardcoded)
         var amazonBlobConfig = new AmazonBlobConfig();
-        services.AddLiteXAmazonBlobService(configuration, amazonBlobConfig);
+        services.AddLiteXAmazonBlobService(amazonBlobConfig);
 
         #endregion
 
         #region LiteX Storage (Google)
 
-        services.AddLiteXGoogleCloudBlobService(configuration);
+        // 1. Use default configuration from appsettings.json's 'GoogleCloudBlobConfig'
+        services.AddLiteXGoogleCloudBlobService();
 
-        // OR
-        // load configuration settings on your own.
-        // from appsettings, database, hardcoded etc.
+        //OR
+        // 2. Load configuration settings using options.
+        services.AddLiteXGoogleCloudBlobService(option =>
+        {
+            //option. = "";
+        });
+
+        //OR
+        // 3. Load configuration settings on your own.
+        // (e.g. appsettings, database, hardcoded)
         var googleCloudBlobConfig = new GoogleCloudBlobConfig();
-        services.AddLiteXGoogleCloudBlobService(configuration, googleCloudBlobConfig);
+        services.AddLiteXGoogleCloudBlobService(googleCloudBlobConfig);
 
         #endregion
 
         #region LiteX Storage (Kvpbase)
 
-        services.AddLiteXKvpbaseBlobService(configuration);
+        // 1. Use default configuration from appsettings.json's 'KvpbaseBlobConfig'
+        services.AddLiteXKvpbaseBlobService();
 
-        // OR
-        // load configuration settings on your own.
-        // from appsettings, database, hardcoded etc.
+        //OR
+        // 2. Load configuration settings using options.
+        services.AddLiteXKvpbaseBlobService(option =>
+        {
+            //option. = "";
+        });
+
+        //OR
+        // 3. Load configuration settings on your own.
+        // (e.g. appsettings, database, hardcoded)
         var kvpbaseBlobConfig = new KvpbaseBlobConfig();
-        services.AddLiteXKvpbaseBlobService(configuration, kvpbaseBlobConfig);
+        services.AddLiteXKvpbaseBlobService(kvpbaseBlobConfig);
 
         #endregion
 
         #region LiteX Storage (FileSystem-Local)
 
-        services.AddLiteXFileSystemBlobService(configuration);
+        // 1. Use default configuration from appsettings.json's 'FileSystemBlobConfig'
+        services.AddLiteXFileSystemBlobService();
 
-        // OR
-        // load configuration settings on your own.
-        // from appsettings, database, hardcoded etc.
+        //OR
+        // 2. Load configuration settings using options.
+        services.AddLiteXFileSystemBlobService(option =>
+        {
+            //option. = "";
+        });
+
+        //OR
+        // 3. Load configuration settings on your own.
+        // (e.g. appsettings, database, hardcoded)
         var fileSystemBlobConfig = new FileSystemBlobConfig();
-        services.AddLiteXFileSystemBlobService(configuration, fileSystemBlobConfig);
+        services.AddLiteXFileSystemBlobService(fileSystemBlobConfig);
 
         #endregion
 
-        #endregion
+        #endregion 
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
