@@ -31,21 +31,21 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        #region LiteX Storage
+        // 1. Use default configuration from appsettings.json's 'GoogleCloudBlobConfig'
+        services.AddLiteXGoogleCloudBlobService();
 
-        #region LiteX Storage (Google)
+        //OR
+        // 2. Load configuration settings using options.
+        services.AddLiteXGoogleCloudBlobService(option =>
+        {
+            //option. = "";
+        });
 
-        services.AddLiteXGoogleCloudBlobService(configuration);
-
-        // OR
-        // load configuration settings on your own.
-        // from appsettings, database, hardcoded etc.
+        //OR
+        // 3. Load configuration settings on your own.
+        // (e.g. appsettings, database, hardcoded)
         var googleCloudBlobConfig = new GoogleCloudBlobConfig();
-        services.AddLiteXGoogleCloudBlobService(configuration, googleCloudBlobConfig);
-
-        #endregion
-
-        #endregion
+        services.AddLiteXGoogleCloudBlobService(googleCloudBlobConfig);
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
