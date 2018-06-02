@@ -47,11 +47,6 @@ public class Startup
         var googleCloudBlobConfig = new GoogleCloudBlobConfig();
         services.AddLiteXGoogleCloudBlobService(googleCloudBlobConfig);
     }
-
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-    {
-
-    }
 }
 ```
 
@@ -63,6 +58,7 @@ public class Startup
 /// <summary>
 /// Customer controller
 /// </summary>
+[Route("api/[controller]")]
 public class CustomerController : Controller
 {
     #region Fields
@@ -91,15 +87,17 @@ public class CustomerController : Controller
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
-    public IActionResult UploadBlobFile(IFormFile file)
+    public IActionResult UploadFile(IFormFile file)
     {
         try
         {
             string blobName = file.FileName;
-            byte[] data = StreamToByteArray(file.OpenReadStream());
+            Stream stream = file.OpenReadStream();
             string contentType = file.ContentType;
+            BlobProperties properties = new BlobProperties { ContentType = contentType };
 
-            bool isUploaded = _blobService.UploadBlob(blobName, data, contentType);
+            bool isUploaded = _blobService.UploadBlob(blobName, stream, properties);
+            //bool isUploaded = await _blobService.UploadBlobAsync(blobName, stream, properties);
         }
         catch (Exception ex)
         {
@@ -117,11 +115,9 @@ public class CustomerController : Controller
     {
         try
         {
-            // get blob bytes
-            byte[] data = _blobService.GetBlob(blobName);
-
-            // get memeory stream
-            MemoryStream stream = _blobService.GetBlobStream(blobName);
+            // get blob
+            Stream stream = _blobService.GetBlob(blobName);
+            //Stream stream = await _blobService.GetBlobAsync(blobName);
         }
         catch (Exception ex)
         {
@@ -140,6 +136,26 @@ public class CustomerController : Controller
         try
         {
             string blobUrl = _blobService.GetBlobUrl(blobName);
+            //string blobUrl = await _blobService.GetBlobUrlAsync(blobName);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex);
+        }
+        return Ok();
+    }
+
+    /// <summary>
+    /// Get blob sas url
+    /// </summary>
+    /// <param name="blobName"></param>
+    /// <returns></returns>
+    public IActionResult GetBlobSasUrl(string blobName)
+    {
+        try
+        {
+            string blobUrl = _blobService.GetBlobSasUrl(blobName, DateTimeOffset.UtcNow.AddHours(2), BlobUrlAccess.Read);
+            //string blobUrl = await _blobService.GetBlobSasUrlAsync(blobName, DateTimeOffset.UtcNow.AddHours(2), BlobUrlAccess.Read);
         }
         catch (Exception ex)
         {
@@ -158,6 +174,7 @@ public class CustomerController : Controller
         try
         {
             bool isDeleted = _blobService.DeleteBlob(blobName);
+            //bool isDeleted = await _blobService.DeleteBlobAsync(blobName);
         }
         catch (Exception ex)
         {
@@ -175,7 +192,9 @@ public class CustomerController : Controller
     {
         try
         {
-            IDictionary<string, string> metadata = _blobService.GetBlobMetadata(blobName);
+            BlobDescriptor blobDescriptor = _blobService.GetBlobDescriptor(blobName);
+            //BlobDescriptor blobDescriptor =  await _blobService.GetBlobDescriptorAsync(blobName);
+            var metadata = blobDescriptor.Metadata;
         }
         catch (Exception ex)
         {
@@ -194,10 +213,35 @@ public class CustomerController : Controller
         try
         {
             IDictionary<string, string> metadata = new Dictionary<string, string>();
-            //list of metadata to update
-            //metadata.Add("", "");
 
-            bool isSet = _blobService.SetBlobMetadata(blobName, metadata);
+            BlobProperties properties = new BlobProperties()
+            {
+                ContentType = "",
+                Metadata = metadata,
+                ContentDisposition = "",
+                Security = BlobSecurity.Public
+            };
+
+            bool isSet = _blobService.SetBlobProperties(blobName, properties);
+            //bool isSet = await _blobService.SetBlobPropertiesAsync(blobName, properties);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex);
+        }
+        return Ok();
+    }
+
+    /// <summary>
+    /// Get blob list
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult GetBlobs()
+    {
+        try
+        {
+            List<BlobDescriptor> blobs = _blobService.GetBlobs().ToList();
+            //List<BlobDescriptor> blobs = await _blobService.GetBlobsAsync().ToList();
         }
         catch (Exception ex)
         {
@@ -226,20 +270,6 @@ public class CustomerController : Controller
         customer = GetCustomers().ToList().FirstOrDefault(x => x.Id == id);
 
         return customer;
-    }
-
-    public static byte[] StreamToByteArray(Stream input)
-    {
-        byte[] buffer = new byte[16 * 1024];
-        using (MemoryStream ms = new MemoryStream())
-        {
-            int read;
-            while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                ms.Write(buffer, 0, read);
-            }
-            return ms.ToArray();
-        }
     }
 
     #endregion
