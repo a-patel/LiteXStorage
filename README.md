@@ -30,7 +30,8 @@ Run the nuget command for installing the client as,
   //LiteX Amazon Storage settings
   "AmazonBlobConfig": {
     "AmazonAwsAccessKeyId": "--- REPLACE WITH YOUR AMAZON ACCESS KEY ID ---",
-    "AmazonAwsSecretAccessKey": "--- REPLACE WITH YOUR AMAZON SECRET ACCESS KEY ---",
+    "AmazonAwsSecretAccessKey": "--- REPLACE WITH YOUR AMAZON SECRET ACCESS KEY ---",    
+    "AmazonRegion": "--- REPLACE WITH YOUR AMAZON REGION ---",
     "AmazonBucketName": "--- REPLACE WITH YOUR AZURE AMAZON BUCKET NAME ---"
   },
 
