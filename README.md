@@ -11,7 +11,7 @@ Run the nuget command for installing the client as,
 * `Install-Package LiteX.Storage.Azure`
 * `Install-Package LiteX.Storage.Amazon`
 * `Install-Package LiteX.Storage.Google`
-* `Install-Package LiteX.Storage.Kvpbase`
+* `Install-Package LiteX.Storage.Kvpbase` // DEPRECATED
 * `Install-Package LiteX.Storage.Local`
 
 
