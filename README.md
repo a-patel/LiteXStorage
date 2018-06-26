@@ -1,6 +1,21 @@
 # LiteXStorage
-Abstract interface to implement any kind of basic blob storage services (e.g. Azure, Amazon, Google, Local FileSystem) for any type of application (ASP.NET Core, .Net Standard 2.x).
+LiteXStorage is simple yet powerful and very high-performance storage mechanism and incorporating both synchronous and asynchronous usage with some advanced usages of cloud storage which can help us to handle storage more easier! 
 
+Provide Storage service for any type of application (.NET Core, .NET Standard). 
+
+Very simple yet advanced configuration. Minimal (one line) code configuration is required. 
+
+It provides possibility to upload files, upload the content of a folder inclusively subfolders, enumerate buckets/container, enumerate the content of a specific 'subfolder', delete buckets/container and delete files from specific subfolders. 
+
+It supports various storage providers and implements many advanced features. You can also write your own and extend it also extend existing providers. Easily migrate or switch between one to another provider with no code breaking changes. 
+
+LiteX Storage uses the least common denominator of functionality between the supported providers to build a cross-cloud storage solution. Abstract interface to implement any kind of basic blob storage services. 
+
+Having a default/generic implementation to wrap the Azure, Amazon AWS S3, Google Cloud, FileSystem (Local), Kvpbase storage. A cross-cloud storage abstraction. 
+
+The Core library contains all base interfaces and tools. One should install at least one other LiteXStorage package to get storage handle implementation. 
+
+This is the ASP.NET Core configuration integration package (Built-in). 
 
 ## Add a dependency
 
