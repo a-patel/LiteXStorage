@@ -24,7 +24,7 @@ This is the ASP.NET Core configuration integration package (Built-in).
 - [AmazonS3](docs/Amazon.md)
 - [Google Cloud](docs/Google.md)
 - [FileSystem](docs/FileSystem.md)
-- [Kvpbase](docs/Kvpbase.md) // deprecated
+- [Kvpbase](docs/Kvpbase.md) - deprecated
 
 
 
