@@ -24,11 +24,11 @@ PM> Install-Package LiteX.Storage.Google
 ##### AppSettings
 ```js
 {  
-  //LiteX Azure Storage settings
-  "AzureBlobConfig": {
-    "AzureBlobStorageConnectionString": "--- REPLACE WITH YOUR AZURE CONNECTION STRING ---",
-    "AzureBlobStorageContainerName": "--- REPLACE WITH YOUR AZURE CONTAINER NAME ---",
-    "AzureBlobStorageEndPoint": "--- REPLACE WITH YOUR AZURE END POINT ---",
+  //LiteX Google Storage settings
+  "GoogleCloudBlobConfig": {
+    "GoogleProjectId": "--- REPLACE WITH YOUR GOOGLE PROJECT ID ---",
+    "GoogleJsonAuthPath": "--- REPLACE WITH YOUR GOOGLE JSON AUTH PATH ---",
+    "GoogleBucketName": "--- REPLACE WITH YOUR GOOGLE BUCKET NAME ---",
     "EnableLogging": true
   }
 }
@@ -40,30 +40,30 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        // 1. Use default configuration from appsettings.json's 'AzureBlobConfig'
-        services.AddLiteXAzureBlobService();
+        // 1. Use default configuration from appsettings.json's 'GoogleCloudBlobConfig'
+        services.AddLiteXGoogleCloudBlobService();
 
         //OR
         // 2. Load configuration settings using options.
-        services.AddLiteXAzureBlobService(option =>
+        services.AddLiteXGoogleCloudBlobService(option =>
         {
-            option.AzureBlobStorageConnectionString = "";
-            option.AzureBlobStorageContainerName = "";
-            option.AzureBlobStorageEndPoint = "";
+            option.GoogleProjectId = "";
+            option.GoogleJsonAuthPath = "";
+            option.GoogleBucketName = "";
             option.EnableLogging = true;
         });
 
         //OR
         // 3. Load configuration settings on your own.
         // (e.g. appsettings, database, hardcoded)
-        var azureBlobConfig = new AzureBlobConfig()
+        var googleCloudBlobConfig = new GoogleCloudBlobConfig()
         {
-            AzureBlobStorageConnectionString = "",
-            AzureBlobStorageContainerName = "",
-            AzureBlobStorageEndPoint = "",
+            GoogleProjectId = "",
+            GoogleJsonAuthPath = "",
+            GoogleBucketName = "",
             EnableLogging = true
         };
-        services.AddLiteXAzureBlobService(azureBlobConfig);
+        services.AddLiteXGoogleCloudBlobService(googleCloudBlobConfig);
         
         
         // add logging (optional)
