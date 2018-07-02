@@ -24,11 +24,12 @@ PM> Install-Package LiteX.Storage.Kvpbase
 ##### AppSettings
 ```js
 {  
-  //LiteX Azure Storage settings
-  "AzureBlobConfig": {
-    "AzureBlobStorageConnectionString": "--- REPLACE WITH YOUR AZURE CONNECTION STRING ---",
-    "AzureBlobStorageContainerName": "--- REPLACE WITH YOUR AZURE CONTAINER NAME ---",
-    "AzureBlobStorageEndPoint": "--- REPLACE WITH YOUR AZURE END POINT ---",
+  //LiteX Kvpbase Storage settings
+  "KvpbaseBlobConfig": {
+    "KvpbaseApiKey": "--- REPLACE WITH YOUR KVPBASE API KEY ---",
+    "KvpbaseContainer": "--- REPLACE WITH YOUR KVPBASE CONTAINER ---",
+    "KvpbaseEndpoint": "--- REPLACE WITH YOUR KVPBASE END POINT ---",
+    "KvpbaseUserGuid": "--- REPLACE WITH YOUR KVPBASE USERGUID ---",
     "EnableLogging": true
   }
 }
@@ -40,30 +41,32 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        // 1. Use default configuration from appsettings.json's 'AzureBlobConfig'
-        services.AddLiteXAzureBlobService();
+        // 1. Use default configuration from appsettings.json's 'KvpbaseBlobConfig'
+        services.AddLiteXKvpbaseBlobService();
 
         //OR
         // 2. Load configuration settings using options.
-        services.AddLiteXAzureBlobService(option =>
+        services.AddLiteXKvpbaseBlobService(option =>
         {
-            option.AzureBlobStorageConnectionString = "";
-            option.AzureBlobStorageContainerName = "";
-            option.AzureBlobStorageEndPoint = "";
+            option.KvpbaseApiKey = "";
+            option.KvpbaseEndpoint = "";
+            option.KvpbaseContainer = "";
+            option.KvpbaseUserGuid = "";
             option.EnableLogging = true;
         });
 
         //OR
         // 3. Load configuration settings on your own.
         // (e.g. appsettings, database, hardcoded)
-        var azureBlobConfig = new AzureBlobConfig()
+        var kvpbaseBlobConfig = new KvpbaseBlobConfig()
         {
-            AzureBlobStorageConnectionString = "",
-            AzureBlobStorageContainerName = "",
-            AzureBlobStorageEndPoint = "",
+            KvpbaseApiKey = "",
+            KvpbaseEndpoint = "",
+            KvpbaseContainer = "",
+            KvpbaseUserGuid = "",
             EnableLogging = true
         };
-        services.AddLiteXAzureBlobService(azureBlobConfig);
+        services.AddLiteXKvpbaseBlobService(kvpbaseBlobConfig);
         
         
         // add logging (optional)
