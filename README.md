@@ -43,7 +43,6 @@ This is the ASP.NET Core configuration integration package (Built-in).
 
 ## Basic Usage :page_facing_up:
 
-
 ### Step 1 : Install the package :package:
 
 > Choose one kinds of sms provider type that you needs and install it via [Nuget](https://www.nuget.org/profiles/iamaashishpatel).
