@@ -67,6 +67,10 @@ public class Startup
             EnableLogging = true
         };
         services.AddLiteXAmazonBlobService(amazonBlobConfig);
+
+
+        // add logging (optional)
+        services.AddLiteXLogging();
     }
 }
 ```
