@@ -1,5 +1,5 @@
 # LiteX Azure Storage
-> LiteX.Storage.Azure is a sms library which is based on LiteX.Storage.Core and Microsoft Azure API.
+> LiteX.Storage.Azure is a storage library which is based on LiteX.Storage.Core and Microsoft Azure API.
 
 This client library enables working with the Microsoft Azure Storage Blob service for storing binary/blob data. 
 
