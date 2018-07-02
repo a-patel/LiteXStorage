@@ -387,6 +387,7 @@ public class CustomerController : Controller
 
     /// <summary>
     /// Get blob sas url
+    /// It depends on Container/Bucket access type
     /// </summary>
     /// <param name="blobName"></param>
     /// <returns></returns>
@@ -454,6 +455,7 @@ public class CustomerController : Controller
 
     /// <summary>
     /// Set blob metadata
+    /// NOT supported by all providers
     /// </summary>
     /// <param name="blobName"></param>
     /// <returns></returns>
