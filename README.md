@@ -18,7 +18,6 @@ The Core library contains all base interfaces and tools. One should install at l
 This is the ASP.NET Core configuration integration package (Built-in). 
 
 
-
 ## Storage Providers :books:
 - [Azure](docs/Azure.md)
 - [AmazonS3](docs/Amazon.md)
