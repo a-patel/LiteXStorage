@@ -697,7 +697,6 @@ public class CustomerController : Controller
 
 
 #### Coming soon
-* Multiple container or bucker support
 
 
 ---
