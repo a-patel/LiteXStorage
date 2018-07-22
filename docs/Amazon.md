@@ -5,7 +5,7 @@ This client library enables working with the Amazon S3 Storage (Blob) service fo
 
 Small library to abstract storing files to Amazon S3. Quick setup for Amazon S3 and very simple wrapper for the Amazon S3 to handle bucket instantiations. 
 
-Purpose of this package is to bring a new level of ease to the developers who deal with Amazon S3 integration with their system.
+Very simple configuration in advanced ways. Purpose of this package is to bring a new level of ease to the developers who deal with Amazon S3 integration with their system.
 
 
 
