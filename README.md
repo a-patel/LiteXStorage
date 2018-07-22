@@ -304,185 +304,6 @@ public class CustomerController : Controller
         return Ok(_blobService.StorageProviderType.ToString());
     }
 
-    /// <summary>
-    /// Create/Replace blob file
-    /// </summary>
-    /// <param name="file"></param>
-    /// <param name="isPublic"></param>
-    /// <returns></returns>
-    [HttpPost]
-    [Route("upload-blob")]
-    [AddSwaggerFileUploadButton]
-    public IActionResult UploadBlobFile(IFormFile file, bool isPublic = true)
-    {
-        try
-        {
-            string blobName = file.FileName;
-            Stream stream = file.OpenReadStream();
-            string contentType = file.ContentType;
-            BlobProperties properties = new BlobProperties
-            {
-                ContentType = contentType,
-                Security = isPublic ? BlobSecurity.Public : BlobSecurity.Private
-            };
-
-            bool isUploaded = _blobService.UploadBlob(blobName, stream, properties);
-            //bool isUploaded = await _blobService.UploadBlobAsync(blobName, stream, properties);
-
-            return Ok(isUploaded);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex);
-        }
-    }
-
-    /// <summary>
-    /// Get blob file data (bytes or stream)
-    /// </summary>
-    /// <param name="blobName"></param>
-    /// <returns></returns>
-    [HttpGet]
-    [Route("download-blob/{blobName}")]
-    public IActionResult DownloadBlobFile(string blobName)
-    {
-        try
-        {
-            // get blob
-            Stream stream = _blobService.GetBlob(blobName);
-            //Stream stream = await _blobService.GetBlobAsync(blobName);
-
-            var response = File(stream, "application/octet-stream", blobName); // FileStreamResult
-            return response;
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex);
-        }
-    }
-
-    /// <summary>
-    /// Get blob url
-    /// </summary>
-    /// <param name="blobName"></param>
-    /// <returns></returns>
-    [HttpGet]
-    [Route("get-blob-url/{blobName}")]
-    public IActionResult GetBlobUrl(string blobName)
-    {
-        try
-        {
-            string blobUrl = _blobService.GetBlobUrl(blobName);
-            //string blobUrl = await _blobService.GetBlobUrlAsync(blobName);
-
-            return Ok(blobUrl);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex);
-        }
-    }
-
-    /// <summary>
-    /// Get blob sas url
-    /// It depends on Container/Bucket access type
-    /// </summary>
-    /// <param name="blobName"></param>
-    /// <returns></returns>
-    [HttpGet]
-    [Route("get-blob-sasurl/{blobName}")]
-    public IActionResult GetBlobSasUrl(string blobName)
-    {
-        try
-        {
-            string blobUrl = _blobService.GetBlobSasUrl(blobName, DateTimeOffset.UtcNow.AddHours(2), BlobUrlAccess.Read);
-            //string blobUrl = await _blobService.GetBlobSasUrlAsync(blobName, DateTimeOffset.UtcNow.AddHours(2), BlobUrlAccess.Read);
-
-            return Ok(blobUrl);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex);
-        }
-    }
-
-    /// <summary>
-    /// Delete blob file
-    /// </summary>
-    /// <param name="blobName"></param>
-    /// <returns></returns>
-    [HttpDelete]
-    [Route("delete-blob/{blobName}")]
-    public IActionResult DeleteBlobFile(string blobName)
-    {
-        try
-        {
-            bool isDeleted = _blobService.DeleteBlob(blobName);
-            //bool isDeleted = await _blobService.DeleteBlobAsync(blobName);
-
-            return Ok(isDeleted);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex);
-        }
-    }
-
-    /// <summary>
-    /// Get blob metadata
-    /// </summary>
-    /// <param name="blobName"></param>
-    /// <returns></returns>
-    [HttpGet]
-    [Route("get-blob-metadata/{blobName}")]
-    public IActionResult GetBlobMetadata(string blobName)
-    {
-        try
-        {
-            BlobDescriptor blobDescriptor = _blobService.GetBlobDescriptor(blobName);
-            //BlobDescriptor blobDescriptor =  await _blobService.GetBlobDescriptorAsync(blobName);
-            var metadata = blobDescriptor.Metadata;
-
-            return Ok(blobDescriptor);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex);
-        }
-    }
-
-    /// <summary>
-    /// Set blob metadata
-    /// NOT supported by all providers
-    /// </summary>
-    /// <param name="blobName"></param>
-    /// <returns></returns>
-    [HttpPut]
-    [Route("set-blob-metadata/{blobName}")]
-    public IActionResult SetBlobMetadata(string blobName)
-    {
-        try
-        {
-            IDictionary<string, string> metadata = new Dictionary<string, string>();
-
-            BlobProperties properties = new BlobProperties()
-            {
-                ContentType = "",
-                Metadata = metadata,
-                ContentDisposition = "",
-                Security = BlobSecurity.Public
-            };
-
-            bool isSet = _blobService.SetBlobProperties(blobName, properties);
-            //bool isSet = await _blobService.SetBlobPropertiesAsync(blobName, properties);
-
-            return Ok(isSet);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex);
-        }
-    }
 
     /// <summary>
     /// Get blob list
@@ -490,66 +311,368 @@ public class CustomerController : Controller
     /// <returns></returns>
     [HttpGet]
     [Route("get-blobs")]
-    public IActionResult GetBlobs()
+    public async Task<IActionResult> GetBlobs()
     {
-        try
-        {
-            List<BlobDescriptor> blobs = _blobService.GetBlobs().ToList();
-            //List<BlobDescriptor> blobs = await _blobService.GetBlobsAsync().ToList();
+        List<BlobDescriptor> blobs = (await _blobService.GetBlobsAsync()).ToList();
 
-            return Ok(blobs);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex);
-        }
+        // sync
+        //List<BlobDescriptor> blobs = _blobService.GetBlobs().ToList();
+
+        return Ok(blobs);
     }
 
-
     /// <summary>
-    /// Get blob file data (bytes or stream)
+    /// Get blob list
     /// </summary>
-    /// <param name="containerName"></param>
     /// <returns></returns>
     [HttpGet]
-    [Route("create-container-or-bucket/{containerName}")]
-    public IActionResult CreateContainerOrBucket(string containerName)
+    [Route("get-blobs/{containerOrBucketName}")]
+    public async Task<IActionResult> GetBlobs(string containerOrBucketName)
     {
-        try
-        {
-            // Create Container
-            bool isCreated = _blobService.CreateContainer(containerName);
-            //bool isCreated = await _blobService.CreateContainerAsync(containerName);
+        List<BlobDescriptor> blobs = (await _blobService.GetBlobsAsync(containerOrBucketName)).ToList();
 
-            return Ok(isCreated);
-        }
-        catch (Exception ex)
+        // sync
+        //List<BlobDescriptor> blobs = _blobService.GetBlobs(containerOrBucketName).ToList();
+
+        return Ok(blobs);
+    }
+
+
+    /// <summary>
+    /// Create/Replace blob file
+    /// </summary>
+    /// <param name="file">Blob file</param>
+    /// <param name="isPublic">Is Private or Public blob</param>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("upload-blob")]
+    [AddSwaggerFileUploadButton]
+    public async Task<IActionResult> UploadBlob(IFormFile file, bool isPublic = true)
+    {
+        string blobName = file.FileName;
+        Stream stream = file.OpenReadStream();
+        string contentType = file.ContentType;
+        BlobProperties properties = new BlobProperties
         {
-            return BadRequest(ex);
-        }
+            ContentType = contentType,
+            Security = isPublic ? BlobSecurity.Public : BlobSecurity.Private
+        };
+
+        bool isUploaded = await _blobService.UploadBlobAsync(blobName, stream, properties);
+
+        // sync
+        //bool isUploaded = _blobService.UploadBlob(blobName, stream, properties);
+
+        return Ok(isUploaded);
+    }
+
+    /// <summary>
+    /// Create/Replace blob file
+    /// </summary>
+    /// <param name="containerOrBucketName">Name of the Bucket/Container.</param>
+    /// <param name="file">Blob file</param>
+    /// <param name="isPublic">Is Private or Public blob</param>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("upload-blob/{containerOrBucketName}")]
+    [AddSwaggerFileUploadButton]
+    public async Task<IActionResult> UploadBlob(string containerOrBucketName, IFormFile file, bool isPublic = true)
+    {
+        string blobName = file.FileName;
+        Stream stream = file.OpenReadStream();
+        string contentType = file.ContentType;
+        BlobProperties properties = new BlobProperties
+        {
+            ContentType = contentType,
+            Security = isPublic ? BlobSecurity.Public : BlobSecurity.Private
+        };
+
+        bool isUploaded = await _blobService.UploadBlobAsync(containerOrBucketName, blobName, stream, properties);
+
+        // sync
+        //bool isUploaded = _blobService.UploadBlob(containerOrBucketName, blobName, stream, properties);
+
+        return Ok(isUploaded);
+    }
+
+
+    /// <summary>
+    /// Get blob file data (bytes or stream)
+    /// </summary>
+    /// <param name="blobName">Name of the Blob.</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("download-blob/{blobName}")]
+    public async Task<IActionResult> DownloadBlob(string blobName)
+    {
+        // get blob
+        Stream stream = await _blobService.GetBlobAsync(blobName);
+
+        // sync
+        //Stream stream = _blobService.GetBlob(blobName);
+
+        var response = File(stream, "application/octet-stream", blobName); // FileStreamResult
+        return response;
     }
 
     /// <summary>
     /// Get blob file data (bytes or stream)
     /// </summary>
-    /// <param name="containerName"></param>
+    /// <param name="containerOrBucketName">Name of the Bucket/Container.</param>
+    /// <param name="blobName">Name of the Blob.</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("download-blob/{containerOrBucketName}/{blobName}")]
+    public async Task<IActionResult> DownloadBlob(string containerOrBucketName, string blobName)
+    {
+        // get blob
+        Stream stream = await _blobService.GetBlobAsync(containerOrBucketName, blobName);
+
+        // sync
+        //Stream stream = _blobService.GetBlob(containerOrBucketName, blobName);
+
+        var response = File(stream, "application/octet-stream", blobName); // FileStreamResult
+        return response;
+    }
+
+
+    /// <summary>
+    /// Get blob url
+    /// </summary>
+    /// <param name="blobName">Name of the Blob.</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("get-blob-url/{blobName}")]
+    public async Task<IActionResult> GetBlobUrl(string blobName)
+    {
+        string blobUrl = await _blobService.GetBlobUrlAsync(blobName);
+
+        // sync
+        //string blobUrl = _blobService.GetBlobUrl(blobName);
+
+        return Ok(blobUrl);
+    }
+
+    /// <summary>
+    /// Get blob url
+    /// </summary>
+    /// <param name="containerOrBucketName">Name of the Bucket/Container.</param>
+    /// <param name="blobName">Name of the Blob.</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("get-blob-url/{containerOrBucketName}/{blobName}")]
+    public async Task<IActionResult> GetBlobUrl(string containerOrBucketName, string blobName)
+    {
+        string blobUrl = await _blobService.GetBlobUrlAsync(containerOrBucketName, blobName);
+
+        // sync
+        //string blobUrl = _blobService.GetBlobUrl(containerOrBucketName, blobName);
+
+        return Ok(blobUrl);
+    }
+
+
+    /// <summary>
+    /// Get blob sas url
+    /// </summary>
+    /// <param name="blobName">Name of the Blob.</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("get-blob-sasurl/{blobName}")]
+    public async Task<IActionResult> GetBlobSasUrl(string blobName)
+    {
+        string blobUrl = await _blobService.GetBlobSasUrlAsync(blobName, DateTimeOffset.UtcNow.AddHours(2), BlobUrlAccess.Read);
+
+        // sync
+        //string blobUrl = _blobService.GetBlobSasUrl(blobName, DateTimeOffset.UtcNow.AddHours(2), BlobUrlAccess.Read);
+
+        return Ok(blobUrl);
+    }
+
+    /// <summary>
+    /// Get blob sas url
+    /// </summary>
+    /// <param name="containerOrBucketName">Name of the Bucket/Container.</param>
+    /// <param name="blobName">Name of the Blob.</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("get-blob-sasurl/{containerOrBucketName}/{blobName}")]
+    public async Task<IActionResult> GetBlobSasUrl(string containerOrBucketName, string blobName)
+    {
+        string blobUrl = await _blobService.GetBlobSasUrlAsync(containerOrBucketName, blobName, DateTimeOffset.UtcNow.AddHours(2), BlobUrlAccess.Read);
+
+        // sync
+        //string blobUrl = _blobService.GetBlobSasUrl(containerOrBucketName, blobName, DateTimeOffset.UtcNow.AddHours(2), BlobUrlAccess.Read);
+
+        return Ok(blobUrl);
+    }
+
+
+    /// <summary>
+    /// Delete blob file
+    /// </summary>
+    /// <param name="blobName">Name of the Blob.</param>
     /// <returns></returns>
     [HttpDelete]
-    [Route("delete-container-or-bucket/{containerName}")]
-    public IActionResult DeleteContainerOrBucket(string containerName)
+    [Route("delete-blob/{blobName}")]
+    public async Task<IActionResult> DeleteBlobFile(string blobName)
     {
-        try
-        {
-            // Create Container
-            bool isDeleted = _blobService.DeleteContainer(containerName);
-            //bool isDeleted = await _blobService.DeleteContainerAsync(containerName);
+        bool isDeleted = await _blobService.DeleteBlobAsync(blobName);
 
-            return Ok(isDeleted);
-        }
-        catch (Exception ex)
+        // sync
+        //bool isDeleted = _blobService.DeleteBlob(blobName);
+
+        return Ok(isDeleted);
+    }
+
+    /// <summary>
+    /// Delete blob file
+    /// </summary>
+    /// <param name="containerOrBucketName">Name of the Bucket/Container.</param>
+    /// <param name="blobName">Name of the Blob.</param>
+    /// <returns></returns>
+    [HttpDelete]
+    [Route("delete-blob/{containerOrBucketName}/{blobName}")]
+    public async Task<IActionResult> DeleteBlobFile(string containerOrBucketName, string blobName)
+    {
+        bool isDeleted = await _blobService.DeleteBlobAsync(containerOrBucketName, blobName);
+
+        // sync
+        //bool isDeleted = _blobService.DeleteBlob(containerOrBucketName, blobName);
+
+        return Ok(isDeleted);
+    }
+
+
+    /// <summary>
+    /// Get blob metadata
+    /// </summary>
+    /// <param name="blobName">Name of the Blob.</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("get-blob-metadata/{blobName}")]
+    public async Task<IActionResult> GetBlobMetadata(string blobName)
+    {
+        BlobDescriptor blobDescriptor = await _blobService.GetBlobDescriptorAsync(blobName);
+
+        // sync
+        //BlobDescriptor blobDescriptor = _blobService.GetBlobDescriptor(blobName);
+
+        var metadata = blobDescriptor.Metadata;
+
+        return Ok(blobDescriptor);
+    }
+
+    /// <summary>
+    /// Get blob metadata
+    /// </summary>
+    /// <param name="containerOrBucketName">Name of the Bucket/Container.</param>
+    /// <param name="blobName">Name of the Blob.</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("get-blob-metadata/{containerOrBucketName}/{blobName}")]
+    public async Task<IActionResult> GetBlobMetadata(string containerOrBucketName, string blobName)
+    {
+        BlobDescriptor blobDescriptor = await _blobService.GetBlobDescriptorAsync(containerOrBucketName, blobName);
+
+        // sync
+        //BlobDescriptor blobDescriptor = _blobService.GetBlobDescriptor(containerOrBucketName, blobName);
+
+        var metadata = blobDescriptor.Metadata;
+
+        return Ok(blobDescriptor);
+    }
+
+
+    /// <summary>
+    /// Set blob metadata
+    /// </summary>
+    /// <param name="blobName">Name of the Blob.</param>
+    /// <returns></returns>
+    [HttpPut]
+    [Route("set-blob-metadata/{blobName}")]
+    public async Task<IActionResult> SetBlobMetadata(string blobName)
+    {
+        IDictionary<string, string> metadata = new Dictionary<string, string>();
+
+        BlobProperties properties = new BlobProperties()
         {
-            return BadRequest(ex);
-        }
+            ContentType = "",
+            Metadata = metadata,
+            ContentDisposition = "",
+            Security = BlobSecurity.Public
+        };
+
+        bool isSet = await _blobService.SetBlobPropertiesAsync(blobName, properties);
+
+        // sync
+        //bool isSet = _blobService.SetBlobProperties(blobName, properties);
+
+        return Ok(isSet);
+    }
+
+    /// <summary>
+    /// Set blob metadata
+    /// </summary>
+    /// <param name="containerOrBucketName">Name of the Bucket/Container.</param>
+    /// <param name="blobName">Name of the Blob.</param>
+    /// <returns></returns>
+    [HttpPut]
+    [Route("set-blob-metadata/{containerOrBucketName}/{blobName}")]
+    public async Task<IActionResult> SetBlobMetadata(string containerOrBucketName, string blobName)
+    {
+        IDictionary<string, string> metadata = new Dictionary<string, string>();
+
+        BlobProperties properties = new BlobProperties()
+        {
+            ContentType = "",
+            Metadata = metadata,
+            ContentDisposition = "",
+            Security = BlobSecurity.Public
+        };
+
+        bool isSet = await _blobService.SetBlobPropertiesAsync(containerOrBucketName, blobName, properties);
+
+        // sync
+        //bool isSet = _blobService.SetBlobProperties(containerOrBucketName, blobName, properties);
+
+        return Ok(isSet);
+    }
+
+
+    /// <summary>
+    /// Get blob file data (bytes or stream)
+    /// </summary>
+    /// <param name="containerOrBucketName">Name of the Bucket/Container.</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("create-container-or-bucket/{containerOrBucketName}")]
+    public async Task<IActionResult> CreateContainerOrBucket(string containerOrBucketName)
+    {
+        bool isCreated = await _blobService.CreateContainerAsync(containerOrBucketName);
+
+        // sync
+        //bool isCreated = _blobService.CreateContainer(containerOrBucketName);
+
+        return Ok(isCreated);
+    }
+
+
+    /// <summary>
+    /// Get blob file data (bytes or stream)
+    /// </summary>
+    /// <param name="containerOrBucketName">Name of the Bucket/Container.</param>
+    /// <returns></returns>
+    [HttpDelete]
+    [Route("delete-container-or-bucket/{containerOrBucketName}")]
+    public async Task<IActionResult> DeleteContainerOrBucket(string containerOrBucketName)
+    {
+        bool isDeleted = await _blobService.DeleteContainerAsync(containerOrBucketName);
+
+        // sync
+        //bool isDeleted = _blobService.DeleteContainer(containerOrBucketName);
+
+        return Ok(isDeleted);
     }
 
     #endregion
