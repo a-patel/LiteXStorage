@@ -1,13 +1,12 @@
 # LiteX Amazon Storage
 > LiteX.Storage.Amazon is a storage library which is based on LiteX.Storage.Core and Amazon (AWS) S3 API.
 
-This client library enables working with the Amazon S3 Storage Blob service for storing binary/blob data. 
+This client library enables working with the Amazon S3 Storage (Blob) service for storing binary/blob data. 
 
-A very simple Wrapper for the Amazon S3 Blob Storage to handle container instantiations. 
+Small library to abstract storing files to Amazon S3. Quick setup for Amazon S3 and very simple wrapper for the Amazon S3 to handle bucket instantiations. 
 
-A library to abstract storing files to Amazon S3. Small library for manage storage with Amazon S3. A quick setup for Amazon S3.
+Purpose of this package is to bring a new level of ease to the developers who deal with Amazon S3 integration with their system.
 
-Wrapper library is just written for the purpose to bring a new level of ease to the developers who deal with Amazon S3 integration with your system.
 
 
 ## Basic Usage
