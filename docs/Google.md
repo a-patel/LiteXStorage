@@ -1,13 +1,12 @@
 # LiteX Google Cloud Storage
 > LiteX.Storage.Google is a storage library which is based on LiteX.Storage.Core and Google Cloud API.
 
-This client library enables working with the Google Cloud Storage Blob service for storing binary/blob data. 
+This client library enables working with the Google Cloud Storage (Blob) service for storing binary/blob data. 
 
-A very simple Wrapper for the Google Cloud Storage to handle container instantiations. 
+Small library to abstract storing files to Google Cloud. Quick setup for Google Cloud and very simple wrapper for the Google Cloud to handle bucket instantiations. 
 
-A library to abstract storing files to Google Cloud. Small library for manage storage with Google Cloud. A quick setup for Google Cloud Storage.
+Purpose of this package is to bring a new level of ease to the developers who deal with Google Cloud Storage integration with their system.
 
-Wrapper library is just written for the purpose to bring a new level of ease to the developers who deal with Google Cloud integration with your system.
 
 
 ## Basic Usage
