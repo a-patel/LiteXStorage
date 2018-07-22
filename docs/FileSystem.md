@@ -1,11 +1,13 @@
 # LiteX FileSystem Storage
 > LiteX.Storage.Local is a storage library which is based on LiteX.Storage.Core and Local FileSystem.
 
-This client library enables working with the Local FileSystem for storing binary/blob data. 
 
-A library to abstract storing files to Microsoft Azure. Small library for manage storage with Azure. A quick setup for Azure Storage.
+This client library enables working with the Local FileSystem Storage service for storing binary/blob data. 
 
-Wrapper library is just written for the purpose to bring a new level of ease to the developers who deal with Local File System integration with your system.
+Small library to abstract storing files to Local FileSystem. Quick setup for Local FileSystem and very simple wrapper for the Local FileSystem Storage to handle container instantiations. 
+
+Very simple configuration in advanced ways. Purpose of this package is to bring a new level of ease to the developers who deal with Local FileSystem Storage integration with their system.
+
 
 
 ## Basic Usage
