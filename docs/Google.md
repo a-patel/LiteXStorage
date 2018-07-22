@@ -5,7 +5,7 @@ This client library enables working with the Google Cloud Storage (Blob) service
 
 Small library to abstract storing files to Google Cloud. Quick setup for Google Cloud and very simple wrapper for the Google Cloud to handle bucket instantiations. 
 
-Purpose of this package is to bring a new level of ease to the developers who deal with Google Cloud Storage integration with their system.
+Very simple configuration in advanced ways. Purpose of this package is to bring a new level of ease to the developers who deal with Google Cloud Storage integration with their system.
 
 
 
