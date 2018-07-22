@@ -1,13 +1,11 @@
 # LiteX Azure Storage
 > LiteX.Storage.Azure is a storage library which is based on LiteX.Storage.Core and Microsoft Azure API.
 
-This client library enables working with the Microsoft Azure Storage Blob service for storing binary/blob data. 
+This client library enables working with the Microsoft Azure Storage (Blob) service for storing binary/blob data. 
 
-A very simple Wrapper for the Azure Blob Storage to handle container instantiations. 
+Small library to abstract storing files to Microsoft Azure. Quick setup for Azure Storage and very simple wrapper for the Azure Blob Storage to handle container instantiations. 
 
-A library to abstract storing files to Microsoft Azure. Small library for manage storage with Azure. A quick setup for Azure Storage.
-
-Wrapper library is just written for the purpose to bring a new level of ease to the developers who deal with Azure integration with your system.
+Purpose of this package is to bring a new level of ease to the developers who deal with Azure integration with their system.
 
 
 
