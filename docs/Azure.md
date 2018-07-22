@@ -77,7 +77,3 @@ public class Startup
 
 For more helpful information about LiteX Storage, Please click [here.](https://github.com/a-patel/LiteXStorage/blob/master/README.md#step-3--use-in-controller-or-business-layer-memo)
 
-
-### Coming soon...
-* Multiple container or bucker support
-
