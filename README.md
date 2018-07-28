@@ -3,13 +3,13 @@
 
 Provide Storage service for ASP.NET Core (2.0 and later) applications.
 
-Small library to abstract blob storage functionalities. Quick setup for any storage provider and very simple wrapper for the widely used provider to handle container instantiations. LiteX Storage uses the least common denominator of functionality between the supported providers to build a cross-cloud storage solution. Abstract interface to implement any kind of basic blob storage services.
+Small library to abstract blob storage functionalities. Quick setup for any storage provider and very simple wrapper for the widely used storage providers. LiteX Storage uses the least common denominator of functionality between the supported providers to build a cross-cloud storage solution. Abstract interface to implement any kind of basic blob storage services. Having a default/generic implementation to wrap the Azure, Amazon AWS S3, Google Cloud, FileSystem (Local), Kvpbase storage. A cross-cloud storage abstraction. 
 
-Very simple configuration in advanced ways. Purpose of this package is to bring a new level of ease to the developers who deal with different storage provider integration with their system and implements many advanced features. You can also write your own and extend it also extend existing providers. Easily migrate or switch between one to another provider with no code breaking changes. Having a default/generic implementation to wrap the Azure, Amazon AWS S3, Google Cloud, FileSystem (Local), Kvpbase storage. A cross-cloud storage abstraction. 
+Very simple configuration in advanced ways. Purpose of this package is to bring a new level of ease to the developers who deal with different storage provider integration with their system and implements many advanced features. You can also write your own and extend it also extend existing providers. Easily migrate or switch between one to another provider with no code breaking changes.
 
 It provides possibility to upload files, upload the content of a folder inclusively subfolders, enumerate buckets/container, enumerate the content of a specific 'subfolder', delete buckets/container and delete files from specific subfolders. 
 
-The Core library contains all base interfaces and tools. One should install at least one other LiteXStorage package to get storage handle implementation. 
+LiteXStorage is an interface to unify the programming model for various storage providers. The Core library contains all base interfaces and tools. One should install at least one other LiteXStorage package to get storage handle implementation.
 
 
 
