@@ -22,7 +22,7 @@ PM> Install-Package LiteX.Storage.Amazon
 
 ##### AppSettings
 ```js
-{  
+{
   //LiteX Amazon Storage settings
   "AmazonBlobConfig": {
     "AmazonAwsAccessKeyId": "--- REPLACE WITH YOUR AMAZON ACCESS KEY ID ---",
