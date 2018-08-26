@@ -12,14 +12,12 @@ It provides possibility to upload files, upload the content of a folder inclusiv
 LiteXStorage is an interface to unify the programming model for various storage providers. The Core library contains all base interfaces and tools. One should install at least one other LiteXStorage package to get storage handle implementation.
 
 
-
 ## Storage Providers :books:
 - [Azure](docs/Azure.md)
 - [AmazonS3](docs/Amazon.md)
 - [Google Cloud](docs/Google.md)
 - [FileSystem](docs/FileSystem.md)
 - [Kvpbase](docs/Kvpbase.md) - deprecated
-
 
 
 ## Features :pager:
@@ -32,7 +30,6 @@ LiteXStorage is an interface to unify the programming model for various storage 
 - Thread safe, concurrency ready
 - Interface based API to support the test driven development and dependency injection
 - Leverages a provider model on top of ILiteXBlobService under the hood and can be extended with your own implementation
-
 
 
 ## Basic Usage :page_facing_up:
