@@ -8,9 +8,7 @@ Small library to abstract storing files to Google Cloud. Quick setup for Google 
 Very simple configuration in advanced ways. Purpose of this package is to bring a new level of ease to the developers who deal with Google Cloud Storage integration with their system.
 
 
-
 ## Basic Usage
-
 
 ### Install the package
 
