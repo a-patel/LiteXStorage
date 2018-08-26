@@ -8,7 +8,6 @@ Small library to abstract storing files to Microsoft Azure. Quick setup for Azur
 Very simple configuration in advanced ways. Purpose of this package is to bring a new level of ease to the developers who deal with Azure Blob Storage integration with their system.
 
 
-
 ## Basic Usage
 
 ### Install the package
