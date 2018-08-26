@@ -8,9 +8,7 @@ Small library to abstract storing files to Amazon S3. Quick setup for Amazon S3 
 Very simple configuration in advanced ways. Purpose of this package is to bring a new level of ease to the developers who deal with Amazon S3 integration with their system.
 
 
-
 ## Basic Usage
-
 
 ### Install the package
 
