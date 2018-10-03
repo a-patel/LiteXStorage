@@ -26,6 +26,11 @@ LiteXStorage is an interface to unify the programming model for various storage 
 - Upload Blobb file
 - Get Blob metadata
 - Set Blob metadata
+- Get all containers/buckets
+- Delete all containers/buckets
+- Delete directory/folder from container/bucket
+- Get Container/Bucket size in bytes
+- Get number to total items/files in Container/Bucket
 - Async compatible
 - Thread safe, concurrency ready
 - Interface based API to support the test driven development and dependency injection
