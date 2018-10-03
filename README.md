@@ -262,7 +262,7 @@ public class Startup
 /// Customer controller
 /// </summary>
 [Route("api/[controller]")]
-public class CustomerController : Controller
+public class StorageController : Controller
 {
     #region Fields
 
@@ -276,7 +276,7 @@ public class CustomerController : Controller
     /// Ctor
     /// </summary>
     /// <param name="blobService"></param>
-    public CustomerController(ILiteXBlobService blobService)
+    public StorageController(ILiteXBlobService blobService)
     {
         _blobService = blobService;
     }
@@ -299,6 +299,7 @@ public class CustomerController : Controller
 
     /// <summary>
     /// Get blob list
+    /// from default Container/Bucket
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -332,6 +333,7 @@ public class CustomerController : Controller
 
     /// <summary>
     /// Create/Replace blob file
+    /// from default Container/Bucket
     /// </summary>
     /// <param name="file">Blob file</param>
     /// <param name="isPublic">Is Private or Public blob</param>
@@ -350,10 +352,10 @@ public class CustomerController : Controller
             Security = isPublic ? BlobSecurity.Public : BlobSecurity.Private
         };
 
-        bool isUploaded = await _blobService.UploadBlobAsync(blobName, stream, properties);
+        var isUploaded = await _blobService.UploadBlobAsync(blobName, stream, properties);
 
         // sync
-        //bool isUploaded = _blobService.UploadBlob(blobName, stream, properties);
+        //var isUploaded = _blobService.UploadBlob(blobName, stream, properties);
 
         return Ok(isUploaded);
     }
@@ -379,10 +381,72 @@ public class CustomerController : Controller
             Security = isPublic ? BlobSecurity.Public : BlobSecurity.Private
         };
 
-        bool isUploaded = await _blobService.UploadBlobAsync(containerOrBucketName, blobName, stream, properties);
+        var isUploaded = await _blobService.UploadBlobAsync(containerOrBucketName, blobName, stream, properties);
 
         // sync
-        //bool isUploaded = _blobService.UploadBlob(containerOrBucketName, blobName, stream, properties);
+        //var isUploaded = _blobService.UploadBlob(containerOrBucketName, blobName, stream, properties);
+
+        return Ok(isUploaded);
+    }
+
+
+    /// <summary>
+    /// Create/Replace blob file in directory/folder
+    /// from default Container/Bucket
+    /// </summary>
+    /// <param name="directoryName">Name of directory/folder.</param>
+    /// <param name="file">Blob file</param>
+    /// <param name="isPublic">Is Private or Public blob</param>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("upload-blob-in-directory/{directoryName}")]
+    [AddSwaggerFileUploadButton]
+    public async Task<IActionResult> UploadBlobInDirectory(string directoryName, IFormFile file, bool isPublic = true)
+    {
+        string blobName = $"{directoryName}/{file.FileName}";
+        Stream stream = file.OpenReadStream();
+        string contentType = file.ContentType;
+        BlobProperties properties = new BlobProperties
+        {
+            ContentType = contentType,
+            Security = isPublic ? BlobSecurity.Public : BlobSecurity.Private
+        };
+
+        var isUploaded = await _blobService.UploadBlobAsync(blobName, stream, properties);
+
+        // sync
+        //var isUploaded = _blobService.UploadBlob(blobName, stream, properties);
+
+        return Ok(isUploaded);
+    }
+
+    /// <summary>
+    /// Create/Replace blob file in directory/folder
+    /// </summary>
+    /// <param name="containerOrBucketName">Name of the Bucket/Container.</param>
+    /// <param name="directoryName">Name of directory/folder.</param>
+    /// <param name="file">Blob file</param>
+    /// <param name="isPublic">Is Private or Public blob</param>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("upload-blob-in-directory/{containerOrBucketName}/{directoryName}")]
+    [AddSwaggerFileUploadButton]
+    public async Task<IActionResult> UploadBlobInDirectory(string containerOrBucketName, string directoryName, IFormFile file, bool isPublic = true)
+    {
+        string blobName = $"{directoryName}/{file.FileName}";
+        //string blobName = $"{directoryName}{Path.DirectorySeparatorChar}{file.FileName}";
+        Stream stream = file.OpenReadStream();
+        string contentType = file.ContentType;
+        BlobProperties properties = new BlobProperties
+        {
+            ContentType = contentType,
+            Security = isPublic ? BlobSecurity.Public : BlobSecurity.Private
+        };
+
+        var isUploaded = await _blobService.UploadBlobAsync(containerOrBucketName, blobName, stream, properties);
+
+        // sync
+        //var isUploaded = _blobService.UploadBlob(containerOrBucketName, blobName, stream, properties);
 
         return Ok(isUploaded);
     }
@@ -390,6 +454,7 @@ public class CustomerController : Controller
 
     /// <summary>
     /// Get blob file data (bytes or stream)
+    /// from default Container/Bucket
     /// </summary>
     /// <param name="blobName">Name of the Blob.</param>
     /// <returns></returns>
@@ -430,6 +495,7 @@ public class CustomerController : Controller
 
     /// <summary>
     /// Get blob url
+    /// from default Container/Bucket
     /// </summary>
     /// <param name="blobName">Name of the Blob.</param>
     /// <returns></returns>
@@ -465,7 +531,8 @@ public class CustomerController : Controller
 
 
     /// <summary>
-    /// Get blob sas url
+    /// Get blob SAS url
+    /// from default Container/Bucket
     /// </summary>
     /// <param name="blobName">Name of the Blob.</param>
     /// <returns></returns>
@@ -482,7 +549,7 @@ public class CustomerController : Controller
     }
 
     /// <summary>
-    /// Get blob sas url
+    /// Get blob SAS url
     /// </summary>
     /// <param name="containerOrBucketName">Name of the Bucket/Container.</param>
     /// <param name="blobName">Name of the Blob.</param>
@@ -502,6 +569,7 @@ public class CustomerController : Controller
 
     /// <summary>
     /// Delete blob file
+    /// from default Container/Bucket
     /// </summary>
     /// <param name="blobName">Name of the Blob.</param>
     /// <returns></returns>
@@ -509,10 +577,10 @@ public class CustomerController : Controller
     [Route("delete-blob/{blobName}")]
     public async Task<IActionResult> DeleteBlobFile(string blobName)
     {
-        bool isDeleted = await _blobService.DeleteBlobAsync(blobName);
+        var isDeleted = await _blobService.DeleteBlobAsync(blobName);
 
         // sync
-        //bool isDeleted = _blobService.DeleteBlob(blobName);
+        //var isDeleted = _blobService.DeleteBlob(blobName);
 
         return Ok(isDeleted);
     }
@@ -527,10 +595,10 @@ public class CustomerController : Controller
     [Route("delete-blob/{containerOrBucketName}/{blobName}")]
     public async Task<IActionResult> DeleteBlobFile(string containerOrBucketName, string blobName)
     {
-        bool isDeleted = await _blobService.DeleteBlobAsync(containerOrBucketName, blobName);
+        var isDeleted = await _blobService.DeleteBlobAsync(containerOrBucketName, blobName);
 
         // sync
-        //bool isDeleted = _blobService.DeleteBlob(containerOrBucketName, blobName);
+        //var isDeleted = _blobService.DeleteBlob(containerOrBucketName, blobName);
 
         return Ok(isDeleted);
     }
@@ -538,6 +606,7 @@ public class CustomerController : Controller
 
     /// <summary>
     /// Get blob metadata
+    /// from default Container/Bucket
     /// </summary>
     /// <param name="blobName">Name of the Blob.</param>
     /// <returns></returns>
@@ -578,6 +647,7 @@ public class CustomerController : Controller
 
     /// <summary>
     /// Set blob metadata
+    /// from default Container/Bucket
     /// </summary>
     /// <param name="blobName">Name of the Blob.</param>
     /// <returns></returns>
@@ -595,10 +665,10 @@ public class CustomerController : Controller
             Security = BlobSecurity.Public
         };
 
-        bool isSet = await _blobService.SetBlobPropertiesAsync(blobName, properties);
+        var isSet = await _blobService.SetBlobPropertiesAsync(blobName, properties);
 
         // sync
-        //bool isSet = _blobService.SetBlobProperties(blobName, properties);
+        //var isSet = _blobService.SetBlobProperties(blobName, properties);
 
         return Ok(isSet);
     }
@@ -623,17 +693,121 @@ public class CustomerController : Controller
             Security = BlobSecurity.Public
         };
 
-        bool isSet = await _blobService.SetBlobPropertiesAsync(containerOrBucketName, blobName, properties);
+        var isSet = await _blobService.SetBlobPropertiesAsync(containerOrBucketName, blobName, properties);
 
         // sync
-        //bool isSet = _blobService.SetBlobProperties(containerOrBucketName, blobName, properties);
+        //var isSet = _blobService.SetBlobProperties(containerOrBucketName, blobName, properties);
 
         return Ok(isSet);
     }
 
 
     /// <summary>
-    /// Get blob file data (bytes or stream)
+    /// Delete directory/folder from default Container/Bucket
+    /// </summary>
+    /// <param name="directoryName">Name of directory/folder.</param>
+    /// <returns></returns>
+    [HttpDelete]
+    [Route("delete-directory/{directoryName}")]
+    public async Task<IActionResult> DeleteDirectory(string directoryName)
+    {
+        var isDeleted = await _blobService.DeleteDirectoryAsync(directoryName);
+
+        // sync
+        //var isDeleted = _blobService.DeleteDirectory(directoryName);
+
+        return Ok(isDeleted);
+    }
+
+    /// <summary>
+    /// Delete directory/folder from Container/Bucket
+    /// </summary>
+    /// <param name="containerOrBucketName">Name of the Bucket/Container.</param>
+    /// <param name="directoryName">Name of directory/folder.</param>
+    /// <returns></returns>
+    [HttpDelete]
+    [Route("delete-directory/{containerOrBucketName}/{directoryName}")]
+    public async Task<IActionResult> DeleteDirectory(string containerOrBucketName, string directoryName)
+    {
+        var isDeleted = await _blobService.DeleteDirectoryAsync(containerOrBucketName, directoryName);
+
+        // sync
+        //var isDeleted = _blobService.DeleteDirectory(containerOrBucketName, directoryName);
+
+        return Ok(isDeleted);
+    }
+
+
+    /// <summary>
+    /// Get number to total items/files in Container/Bucket
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("get-container-or-bucket-item-count")]
+    public async Task<IActionResult> GetContainerOrBucketItemCount()
+    {
+        var itemsCount = await _blobService.GetContainerItemCountAsync();
+
+        // sync
+        //var itemsCount = _blobService.GetContainerItemCount();
+
+        return Ok(itemsCount);
+    }
+
+    /// <summary>
+    /// Get number to total items/files in Container/Bucket
+    /// </summary>
+    /// <param name="containerOrBucketName">Name of the Bucket/Container.</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("get-container-or-bucket-item-count/{containerOrBucketName}")]
+    public async Task<IActionResult> GetContainerOrBucketItemCount(string containerOrBucketName)
+    {
+        var itemsCount = await _blobService.GetContainerItemCountAsync(containerOrBucketName);
+
+        // sync
+        //var itemsCount = _blobService.GetContainerItemCount(containerOrBucketName);
+
+        return Ok(itemsCount);
+    }
+
+
+    /// <summary>
+    /// Get Container/Bucket size in bytes
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("get-container-or-bucket-size")]
+    public async Task<IActionResult> GetContainerOrBucketSize()
+    {
+        var size = await _blobService.GetContainerSizeAsync();
+
+        // sync
+        //var size = _blobService.GetContainerSize();
+
+        return Ok(size);
+    }
+
+    /// <summary>
+    /// Get Container/Bucket size in bytes
+    /// </summary>
+    /// <param name="containerOrBucketName">Name of the Bucket/Container.</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("get-container-or-bucket-size/{containerOrBucketName}")]
+    public async Task<IActionResult> GetContainerOrBucketSize(string containerOrBucketName)
+    {
+        var size = await _blobService.GetContainerSizeAsync(containerOrBucketName);
+
+        // sync
+        //var size = _blobService.GetContainerSize(containerOrBucketName);
+
+        return Ok(size);
+    }
+
+
+    /// <summary>
+    /// Create Container/Bucket
     /// </summary>
     /// <param name="containerOrBucketName">Name of the Bucket/Container.</param>
     /// <returns></returns>
@@ -641,17 +815,16 @@ public class CustomerController : Controller
     [Route("create-container-or-bucket/{containerOrBucketName}")]
     public async Task<IActionResult> CreateContainerOrBucket(string containerOrBucketName)
     {
-        bool isCreated = await _blobService.CreateContainerAsync(containerOrBucketName);
+        var isCreated = await _blobService.CreateContainerAsync(containerOrBucketName);
 
         // sync
-        //bool isCreated = _blobService.CreateContainer(containerOrBucketName);
+        //var isCreated = _blobService.CreateContainer(containerOrBucketName);
 
         return Ok(isCreated);
     }
 
-
     /// <summary>
-    /// Get blob file data (bytes or stream)
+    /// Delete Container/Bucket
     /// </summary>
     /// <param name="containerOrBucketName">Name of the Bucket/Container.</param>
     /// <returns></returns>
@@ -659,10 +832,44 @@ public class CustomerController : Controller
     [Route("delete-container-or-bucket/{containerOrBucketName}")]
     public async Task<IActionResult> DeleteContainerOrBucket(string containerOrBucketName)
     {
-        bool isDeleted = await _blobService.DeleteContainerAsync(containerOrBucketName);
+        var isDeleted = await _blobService.DeleteContainerAsync(containerOrBucketName);
 
         // sync
-        //bool isDeleted = _blobService.DeleteContainer(containerOrBucketName);
+        //var isDeleted = _blobService.DeleteContainer(containerOrBucketName);
+
+        return Ok(isDeleted);
+    }
+
+
+
+    /// <summary>
+    /// Get all Containers/Buckets
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("get-all-containers-or-buckets")]
+    public async Task<IActionResult> GetAllContainersOrBuckets()
+    {
+        var containers = await _blobService.GetAllContainersAsync();
+
+        // sync
+        //var containers = _blobService.GetAllContainers();
+
+        return Ok(containers);
+    }
+
+    /// <summary>
+    /// Delete all Containers/Buckets
+    /// </summary>
+    /// <returns></returns>
+    [HttpDelete]
+    [Route("delete-all-containers-or-buckets")]
+    public async Task<IActionResult> DeleteAllContainersOrBuckets()
+    {
+        var isDeleted = await _blobService.DeleteAllContainersAsync();
+
+        // sync
+        //var isDeleted = _blobService.DeleteAllContainers();
 
         return Ok(isDeleted);
     }
