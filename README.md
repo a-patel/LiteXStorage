@@ -264,7 +264,7 @@ public class Startup
 
 ```cs
 /// <summary>
-/// Customer controller
+/// Storage controller
 /// </summary>
 [Route("api/[controller]")]
 public class StorageController : Controller
