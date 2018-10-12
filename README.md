@@ -901,10 +901,7 @@ public class StorageController : Controller
 
 
 #### Coming soon
-- Get all Containers/Buckets
-- Delete all Containers/Buckets
-- Delete Directory/Folder from Container/Bucket
-- Get Container/Bucket S
+- Get Container/Bucket size in bytes
 - Get number of total items/files in Container/Bucket
 
 
