@@ -22,7 +22,7 @@ LiteXStorage is an interface to unify the programming model for various storage 
 
 ## Features :pager:
 - Create container or bucket
-- Get Shared Access Signature (SAS) url
+- Get Shared Access Signature (SAS) URL
 - Upload Blobb file
 - Get Blob metadata
 - Set Blob metadata
