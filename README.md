@@ -903,6 +903,8 @@ public class StorageController : Controller
 #### Coming soon
 - Get Container/Bucket size in bytes
 - Get number of total items/files in Container/Bucket
+- Multiple provider support
+- Obsolute sync methods
 
 
 ---
