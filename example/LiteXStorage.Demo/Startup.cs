@@ -1,7 +1,7 @@
 #region Imports
 using LiteX.Extensions.Logging;
-using LiteX.Storage.Azure;
 using LiteX.Storage.AmazonS3;
+using LiteX.Storage.Azure;
 using LiteX.Storage.FileSystem;
 using LiteX.Storage.GoogleCloud;
 using LiteX.Storage.Kvpbase;
@@ -48,10 +48,10 @@ namespace LiteXStorage.Demo
             };
             services.AddLiteXAmazonS3ServiceFactory(providerName: "amazons3", config: amazonS3Config);
 
-            // TODO: register more providers using factory
+            // TODO: register more providers using factory (same way)
 
 
-            // register default provider (last registered provider is the default one)
+            // Register default provider (last registered provider is the default one)
             services.AddLiteXAzureBlobStorageService();
 
             #endregion
@@ -189,7 +189,7 @@ namespace LiteXStorage.Demo
             //OR
             // 3. Load configuration settings on your own.
             // (e.g. appsettings, database, hardcoded)
-            var kvpbaseBlobConfig = new KvpbaseStorageConfig()
+            var kvpbaseStorageConfig = new KvpbaseStorageConfig()
             {
                 KvpbaseApiKey = "",
                 KvpbaseEndpoint = "",
@@ -197,7 +197,7 @@ namespace LiteXStorage.Demo
                 KvpbaseUserGuid = "",
                 EnableLogging = true
             };
-            services.AddLiteXKvpbaseStorageService(kvpbaseBlobConfig);
+            services.AddLiteXKvpbaseStorageService(kvpbaseStorageConfig);
 
             #endregion
 
