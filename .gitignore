@@ -153,7 +153,7 @@ $RECYCLE.BIN/
 
 
 # ===============================
-# project specific (DotProject)
+# project specific (LiteX)
 # ===============================
 backup/
 !backup/backup.README.md
@@ -162,4 +162,4 @@ glob:*.user
 *.patch
 *.hg
 src/packages/*
-example/LiteXStorage.Demo/appsettings.Development.json
+*/*/appsettings.Development.json
