@@ -37,6 +37,7 @@ LiteXStorage is an interface to unify the programming model for various storage 
 - Get number to total items/files in Container/Bucket
 - Async compatible
 - Thread safe, concurrency ready
+- Obsolete sync methods
 - Interface based API to support the test driven development and dependency injection
 - Leverages a provider model on top of ILiteXBlobService under the hood and can be extended with your own implementation
 
@@ -1380,9 +1381,9 @@ public class StorageController : Controller
 
 
 #### Coming soon
-- Obsolete sync methods
-- Get Container/Bucket size in bytes
-- Get number of total items/files in Container/Bucket
+- .NET Standard 2.1 support
+- .NET 5.0 support
+- Remove sync methods
 
 
 ---
