@@ -20,11 +20,12 @@ LiteXStorage is an interface to unify the programming model for various storage 
 - [Kvpbase](docs/Kvpbase.md) - deprecated
 
 #### Documents
-- [Old Docs - Version 6.x.x and before](README - 6.x.x and before.md)
+- [Old Docs - Version 6.x.x and before](https://github.com/a-patel/LiteXStorage/blob/master/README%20-%206.x.x%20and%20before.md)
 - Refer example code for more details
 
 
 ## Features :pager:
+- Multiple provider support (using provider factory)
 - Create container or bucket
 - Get Shared Access Signature (SAS) URL
 - Upload Blobb file
