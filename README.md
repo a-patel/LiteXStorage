@@ -4,7 +4,7 @@
 
 
 
-Provide Storage service for ASP.NET Core (2.0 and later) applications.
+Provide Storage service for ASP.NET Core/.NET applications.
 
 Small library to abstract blob storage functionalities. Quick setup for any storage provider and very simple wrapper for the widely used storage providers. LiteX Storage uses the least common denominator of functionality between the supported providers to build a cross-cloud storage solution. Abstract interface to implement any kind of basic blob storage services. Having a default/generic implementation to wrap the Azure, Amazon AWS S3, Google Cloud, FileSystem (Local), Kvpbase storage. A cross-cloud storage abstraction. 
 
